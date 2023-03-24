@@ -1,9 +1,19 @@
-import { Button, Center, Heading, Input, Spinner, Stack, Switch } from "native-base";
+import {
+  Button,
+  Center,
+  Heading,
+  Input,
+  Spinner,
+  Stack,
+  Switch,
+} from "native-base";
 import React, { useState } from "react";
 import { View } from "react-native";
+import { Name } from "../../components/Name";
 
 export function Profile() {
-
+  const [user, setUser] = useState("");
+  const [show, setShow] = useState(false);
   return (
     <View>
       <Stack
@@ -14,12 +24,34 @@ export function Profile() {
         justifyContent="center"
         space="6"
       >
-        <Heading>Seja bem vindo!</Heading>
-        <Input testID="input-name" backgroundColor='blue.400' borderRadius='3xl' placeholder="Digite seu nome" />
-        <Input borderRadius='3xl' placeholder="Digite sua senha" />
-        <Switch size="lg" />
-        <Spinner size="lg" />
-        <Button borderRadius='3xl' p='2' px='8'> Logar </Button>
+        {show && <Heading testID="printed-username">Bem-vinda {user}</Heading>}
+        <Input
+          value={user}
+          onChangeText={setUser}
+          testID="input-name"
+          borderRadius="3xl"
+          placeholder="Digite seu nome"
+        />
+        <Input
+          testID="input-password"
+          borderRadius="3xl"
+          placeholder="Digite sua senha"
+        />
+
+        <Button
+          testID="botao-test"
+          onPress={() => {
+            setTimeout(()=>{
+              setShow(true);
+            },2000)
+          }}
+          borderRadius="3xl"
+          p="2"
+          px="8"
+        >
+          Logar
+        </Button>
+
       </Stack>
     </View>
   );
