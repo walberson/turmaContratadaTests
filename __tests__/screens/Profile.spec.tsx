@@ -2,7 +2,8 @@ import { render, fireEvent, waitFor, act, renderHook } from "@testing-library/re
 import React from "react";
 import { Profile } from "../../src/screens/Profile";
 import { NativeBaseProvider } from "native-base";
-import useCounter from "../../hooks/useCounter";
+import {useCounter} from "../../hooks/useCounter";
+import { Counter } from "../../src/screens/Counter";
 type Props = {
   children?: React.ReactNode;
 };
@@ -48,10 +49,12 @@ describe("Test Profile", () => {
     expect(input).toBeTruthy();
   });
   it("verify if the user name is printed", async () => {
-    const expectedWelcome = "Bem-vinda Taty";
+    const users = ["walberson", "murilo", "joao"];
+    users.forEach(async (user) => {
+      const expectedWelcome = `Bem-vinda ${user}`;
     const screen = render(<Profile />, { wrapper: Provider });
     //Estou escreveno no input
-    fireEvent.changeText(screen.getByTestId("input-name"), "Taty");
+    fireEvent.changeText(screen.getByTestId("input-name"), `${user}`);
     //Estou pressionando o botão
     fireEvent.press(screen.getByTestId("botao-test"));
     //Estou verificando se o texto foi impresso
@@ -61,4 +64,13 @@ describe("Test Profile", () => {
     );
       expect(welcomeOutput.children[0]+welcomeOutput.children[1]).toEqual(expectedWelcome);
   });
+    });
+});
+it('should increment counter', () => {
+  const { result } = renderHook(() => useCounter());
+  expect(result.current[0]).toBe(0);
+  act(() => {
+    result.current[1]();
+  });
+  expect(result.current[0]).toBe(1);
 });
